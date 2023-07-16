@@ -1,27 +1,13 @@
+package com.company
 
-
-
-class TreeNode(var `val`: Int) {
-    var left: TreeNode? = null
-    var right: TreeNode? = null
-}
-
-class Solution {
-    fun maxLevelSum(root: TreeNode?): Int {
-        return 0
+fun fib(n: Int): Int {
+    val memo = mutableMapOf(1 to 1, 2 to 1)
+    for(i in 3..n){
+        memo[i] = memo[i-1]!! + memo[i-2]!!
     }
-
+    return memo[n]!!
 }
 
 fun main(){
-    println("Hello, World!")
-
-    var root = TreeNode(1)
-    root.left = TreeNode(7)
-    root.right = TreeNode(0)
-
-    root.left!!.left = TreeNode(7)
-    root.left!!.right = TreeNode(-8)
-
-
+    println(fib(9))
 }

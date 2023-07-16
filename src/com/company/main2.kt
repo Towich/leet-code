@@ -1,4 +1,4 @@
-
+package com.company
 fun blocks(blocks: Int): Int {
     var sum = 0
     var currLevel = 0
