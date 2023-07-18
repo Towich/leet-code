@@ -3,11 +3,12 @@ package com.company;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.math.BigInteger;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
 
 public class MaxMultiplication {
-
     static long maxMultOptimized(int n, int[] array){
         int maxInt = array[0];
         int maxInt2 = array[1];
@@ -103,15 +104,52 @@ public class MaxMultiplication {
         }
     }
 
-    static long maxMultBruteForce(int n, int[] array){
-        long maxMult = (long) array[0] * array[1] * array[2];
+    static BigInteger maxMult4Optimized(int n, int[] array){
+        MergeSort.mergeSort(array);
+        BigInteger maxMult_allPositives = BigInteger.valueOf((long) array[n - 1] * array[n-2] * array[n-3]);
+        maxMult_allPositives = maxMult_allPositives.multiply(BigInteger.valueOf(array[n-4]));
 
-        for(int i = 0; i < n-2; i++){
-            for(int j = i+1; j < n-1; j++){
-                for(int k = j+1; k < n; k++){
-                    long localMult = (long) array[i] * array[j] * array[k];
-                    if(localMult > maxMult)
-                        maxMult = localMult;
+        BigInteger maxMult = maxMult_allPositives;
+
+        int negatives = 0;
+        for(int i = 0; i < 4; i++){
+            if(array[i] < 0)
+                negatives++;
+        }
+
+        if(negatives > 1){
+            BigInteger maxMult_twoNegativeTwoPositive = BigInteger.valueOf((long) array[n-1] * array[n-2] * array[0]);
+            maxMult_twoNegativeTwoPositive = maxMult_twoNegativeTwoPositive.multiply(BigInteger.valueOf(array[1]));
+
+            if(maxMult_twoNegativeTwoPositive.compareTo(maxMult) > 0){
+                maxMult = maxMult_twoNegativeTwoPositive;
+            }
+        }
+        if(negatives > 3){
+            BigInteger maxMult_allNegatives = BigInteger.valueOf((long) array[0] * array[1] * array[2]);
+            maxMult_allNegatives = maxMult_allNegatives.multiply(BigInteger.valueOf(array[3]));
+
+            if(maxMult_allNegatives.compareTo(maxMult) > 0){
+                maxMult = maxMult_allNegatives;
+            }
+        }
+
+        return maxMult;
+    }
+
+    static BigInteger maxMultBruteForce(int n, int[] array){
+        BigInteger maxMult = BigInteger.valueOf((long) array[0] * array[1] * array[2]);
+        maxMult = maxMult.multiply(BigInteger.valueOf(array[3]));
+
+        for(int i = 0; i < n-3; i++){
+            for(int j = i+1; j < n-2; j++){
+                for(int k = j+1; k < n-1; k++){
+                    for(int l = k+1; l < n; l++) {
+                        BigInteger localMult = BigInteger.valueOf((long) array[i] * array[j] * array[k]);
+                        localMult = localMult.multiply(BigInteger.valueOf(array[l]));
+                        if (localMult.compareTo(maxMult) > 0)
+                            maxMult = localMult;
+                    }
                 }
 
             }
@@ -146,10 +184,10 @@ public class MaxMultiplication {
         for(int i = 0; i < tests; i++){
             int[] array = generateArray(n, min_a, max_a);
 
-            long maxMult = maxMultOptimized(n, array);
-            long maxMultBruteForce = maxMultBruteForce(n, array);
+            BigInteger maxMult = maxMult4Optimized(n, array);
+            BigInteger maxMultBruteForce = maxMultBruteForce(n, array);
 
-            if(maxMult == maxMultBruteForce){
+            if(Objects.equals(maxMult, maxMultBruteForce)){
                 System.out.println("OK");
             }
             else{
@@ -198,20 +236,53 @@ public class MaxMultiplication {
         System.out.println(maxMultOptimized(n, array));
     }
 
+    static void mergeSortImpl(int[] values, int[] buffer, int l, int r){
+        if(l < r){
+            int m = (l + r)/2;
+            mergeSortImpl(values, buffer, l, m);
+            mergeSortImpl(values, buffer, m+1, r);
+
+            int k = l;
+            for(int i = l, j = m+1; i <= m || j <= r; ){
+                if(j > r || (i <= m && values[i] < values[j])){
+                    buffer[k] = values[i];
+                    ++i;
+                }
+                else{
+                    buffer[k] = values[j];
+                    ++j;
+                }
+                ++k;
+            }
+
+            for(int i = l; i <= r; i++){
+                values[i] = buffer[i];
+            }
+        }
+    }
+
+    static void mergeSort(int[] values){
+        if(values.length > 0){
+            int[] buffer = new int[values.length];
+            mergeSortImpl(values, buffer, 0, values.length-1);
+        }
+    }
+
     public static void main(String[] args){
-//        Scanner s = new Scanner(System.in);
-//        int n = s.nextInt();            // 2 <= n <= 200 000
-//
-//        int[] array = new int[n];
-//
-//        for(int i = 0; i < n; i++){
-//            array[i] = s.nextInt();
-//        }
-//
-//        System.out.println(maxMultOptimized(n, array));
-        stressTest(4, -200000, 200000, 100);
+//        int n = 5;
+//        int[] array = generateArray(n, -10, 10);
 
-//        testCase();
+        Scanner s = new Scanner(System.in);
 
+        int n = s.nextInt();
+        int[] array = new int[n];
+
+        for(int i = 0; i < n; i++){
+            array[i] = s.nextInt();
+        }
+
+        System.out.println(maxMult4Optimized(n, array));
+
+//        stressTest(20, -200000, 200000, 25);
     }
 }
