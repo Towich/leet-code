@@ -36,7 +36,6 @@ public class Fibonacci {
     }
 
     static long memoFibonacciModM(long n, int m){
-
         if(n == 0 || n == 1)
             return n;
 
@@ -66,7 +65,7 @@ public class Fibonacci {
         }
     }
 
-    static void stressTest(int tests, int m){
+    static void stressTest1(int tests, int m){
 
         for(int n = 0; n < tests; n++) {
             long fib1 = memoFibonacciModM(n, m);
@@ -85,17 +84,45 @@ public class Fibonacci {
         }
     }
 
-    public static void main(String[] args) {
-        Scanner s = new Scanner(System.in);
-        long n = s.nextLong();
-        int m = s.nextInt();
+    static int lastDigitOfSumFibonacci(long n){
+        // sum of first 60 elements ~ '0' in last digit
+        // sum has period = 60
+        // sooo we can just do n % 60
+        // and then just find the last digit for 0 <= n <= 59 <--- this will be answer.
+        n = n % 60;
 
-        int period = pisanoPeriod(m);
-        int minimalFibonacci = (int) (n % period);
+        int lastDigit = 0;
 
-        System.out.println(memoFibonacciModM(minimalFibonacci, m));
+        for(int i = 0; i <= n; i++){
+            int memoFib = (int) memoFibonacciModM(i, 10);
+            lastDigit = (lastDigit + memoFib) % 10;
+//            System.out.println("F[" + i + "] = " + memoFib + " | " + lastDigit);
+        }
 
-//        stressTest(1550, 239);
+        return lastDigit;
     }
 
+    static int lastDigitOfSumFibonacci(long m, long n){
+        int lastDigit = 0;
+        long quantityOfNums = n - m + 1;
+        quantityOfNums %= 60;
+
+        int m_mod60 = (int) (m % 60);
+
+        for(int i = m_mod60; i < m_mod60 + quantityOfNums; i++){
+            int memoFib = (int) memoFibonacciModM(i, 10);
+            lastDigit = (lastDigit + memoFib) % 10;
+//            System.out.println("F[" + i + "] = " + memoFib + " | " + lastDigit);
+        }
+
+        return lastDigit;
+    }
+
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        long m = s.nextLong();
+        long n = s.nextLong();
+
+        System.out.println(lastDigitOfSumFibonacci(m, n));
+    }
 }
