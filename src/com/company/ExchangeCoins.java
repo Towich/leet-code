@@ -52,6 +52,7 @@ public class ExchangeCoins {
         }
 
     }
+
     static void printAllExchangeVariants_Optimized(int money) {
         List<List<Integer>> list = new ArrayList<>();
 
@@ -91,15 +92,15 @@ public class ExchangeCoins {
                 bw.newLine();
             }
             bw.flush();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    static void test(){
+
+    static void testAllExchangeVariants() {
 
         // Test BruteForce and Optimized algorithms with money = 0..50
-        for(int i = 0; i <= 50; i++){
+        for (int i = 0; i <= 50; i++) {
             try {
                 bw.write("money = " + i);
                 bw.newLine();
@@ -112,17 +113,88 @@ public class ExchangeCoins {
                 bw.newLine();
                 printAllExchangeVariants_Optimized(i);
                 bw.newLine();
-            }
-            catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    static List<Integer> getMinimalQuantityExchangeCoins(int money) {
+        List<Integer> list = new ArrayList<>(List.of(0, 0, 0, 0, 0, 0));
+
+        int numCoins = 0;
+        while (money > 0) {
+            if (money >= 50) {
+                money -= 50;
+                list.set(1, list.get(1) + 1);
+            } else if (money >= 20) {
+                money -= 20;
+                list.set(2, list.get(2) + 1);
+            } else if (money >= 10) {
+                money -= 10;
+                list.set(3, list.get(3) + 1);
+            } else if (money >= 5) {
+                money -= 5;
+                list.set(4, list.get(4) + 1);
+            } else {
+                money--;
+                list.set(5, list.get(5) + 1);
+            }
+            numCoins++;
+        }
+
+        list.set(0, numCoins);
+
+        return list;
     }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         int inputMoney = scanner.nextInt();
-        printAllExchangeVariants_Optimized(inputMoney);
+        List<Integer> answer = getMinimalQuantityExchangeCoins(inputMoney);
+
+        System.out.println(answer.get(0));
+        boolean isFirst = true;
+        for (int i = 0; i < answer.get(1); i++) {
+            if(isFirst) {
+                System.out.print("50");
+                isFirst = false;
+            }
+            else
+                System.out.print(" 50");
+        }
+        for (int i = 0; i < answer.get(2); i++) {
+            if(isFirst) {
+                System.out.println("20");
+                isFirst = false;
+            }
+            else
+                System.out.print(" 20");
+        }
+        for (int i = 0; i < answer.get(3); i++) {
+            if(isFirst) {
+                System.out.print("10");
+                isFirst = false;
+            }
+            else
+                System.out.print(" 10");
+        }
+        for (int i = 0; i < answer.get(4); i++) {
+            if(isFirst) {
+                System.out.print("5");
+                isFirst = false;
+            }
+            else
+                System.out.print(" 5");
+        }
+        for (int i = 0; i < answer.get(5); i++) {
+            if(isFirst) {
+                System.out.print("1");
+                isFirst = false;
+            }
+            else
+                System.out.print(" 1");
+        }
     }
 }
