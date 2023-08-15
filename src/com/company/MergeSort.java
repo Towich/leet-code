@@ -27,7 +27,7 @@ public class MergeSort {
         }
     }
 
-    static void mergeSort(int[] values){
+    public static void mergeSort(int[] values){
         if(values.length > 0){
             int[] buffer = new int[values.length];
             mergeSortImpl(values, buffer, 0, values.length-1);
