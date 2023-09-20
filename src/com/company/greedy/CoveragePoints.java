@@ -28,20 +28,46 @@ public class CoveragePoints {
         return segmentsCount;
     }
 
+    static int coveragePointsMinimalSegments(int numOfPoints, int countOfLines, int minNum, int maxNum){
+        if(countOfLines >= numOfPoints)
+            return 0;
+
+        float m_max = (maxNum - minNum) / (float)countOfLines;
+
+        for(int m = 1; m <= m_max; m++){
+            if(m * countOfLines < (maxNum - minNum))
+                continue;
+            return m;
+        }
+
+        return 5;
+    }
+
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
 
+        int minNum;
+        int maxNum;
+
         int n = s.nextInt();
-        int L = s.nextInt();
+        int k = s.nextInt();
 
         int[] points = new int[n];
         for (int i = 0; i < n; i++) {
             points[i] = s.nextInt();
         }
 
-        MergeSort.mergeSort(points);
+        minNum = points[0];
+        maxNum = points[0];
 
-        int segmentsCount = coverageSegments(L, points);
+        for (int p:points) {
+            if(p < minNum)
+                minNum = p;
+            if(p > maxNum)
+                maxNum = p;
+        }
+
+        int segmentsCount = coveragePointsMinimalSegments(n, k, minNum, maxNum);
         System.out.println(segmentsCount);
     }
 }
