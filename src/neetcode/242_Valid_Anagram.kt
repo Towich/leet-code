@@ -1,6 +1,6 @@
 package neetcode
 
-fun mergeSortImpl(values: CharArray, buffer: CharArray, l: Int, r: Int) {
+private fun mergeSortImpl(values: CharArray, buffer: CharArray, l: Int, r: Int) {
     if (l < r) {
         val m = (l + r) / 2
         mergeSortImpl(values, buffer, l, m)
@@ -25,14 +25,14 @@ fun mergeSortImpl(values: CharArray, buffer: CharArray, l: Int, r: Int) {
         }
     }
 }
-fun mergeSort(values: CharArray) {
+private fun mergeSort(values: CharArray) {
     if (values.isNotEmpty()) {
         val buffer = CharArray(values.size)
         mergeSortImpl(values, buffer, 0, values.size - 1)
     }
 }
 
-fun isAnagram(s: String, t: String): Boolean {
+private fun isAnagram(s: String, t: String): Boolean {
     val sCharArray = s.toCharArray()
     val tCharArray = t.toCharArray()
     mergeSort(sCharArray)
