@@ -1,4 +1,4 @@
-package neetcode
+package neetcode.arrays_hashing
 
 private fun mergeSort(values: Array<Pair<Int, Int>>) {
     if (values.isNotEmpty()) {

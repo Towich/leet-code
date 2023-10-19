@@ -1,4 +1,4 @@
-package neetcode
+package neetcode.arrays_hashing
 
 fun isValidSudoku(board: Array<CharArray>): Boolean {
 

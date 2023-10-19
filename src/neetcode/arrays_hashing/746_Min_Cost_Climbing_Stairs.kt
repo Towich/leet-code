@@ -1,4 +1,4 @@
-package neetcode
+package neetcode.arrays_hashing
 
 fun minCostClimbingStairs(cost: IntArray): Int {
     val buffCost = IntArray(cost.size)

@@ -1,4 +1,4 @@
-package neetcode;
+package neetcode.arrays_hashing;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package neetcode
+package neetcode.arrays_hashing
 
 private fun mergeSortImpl(values: IntArray, buffer: IntArray, l: Int, r: Int) {
     if (l < r) {

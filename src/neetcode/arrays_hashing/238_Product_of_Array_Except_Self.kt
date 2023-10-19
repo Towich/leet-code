@@ -1,4 +1,4 @@
-package neetcode
+package neetcode.arrays_hashing
 
 fun productExceptSelf(nums: IntArray): IntArray {
 
