@@ -1,6 +1,6 @@
 package neetcode.linked_list
 
-fun reverseList(head: ListNode?): ListNode? {
+private fun reverseList(head: ListNode?): ListNode? {
     var prev: ListNode? = null
     var curr: ListNode? = head
 
